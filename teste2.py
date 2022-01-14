@@ -9,7 +9,7 @@ cf.go_offline()
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler,PolynomialFeatures
 from sklearn.linear_model import LinearRegression
-%matplotlib inline
+#%matplotlib inline
 
 df_customer = pd.read_csv('gs://stack-labs-list/olist_customers_dataset.csv', sep=";")
 df_geolocation = pd.read_csv('gs://stack-labs-list/olist_geolocation_dataset.csv', sep=";")
