@@ -31,4 +31,5 @@ df = df.merge(df_sellers, on='seller_id', how='outer')
 
 df=df[['customer_state', 'customer_city', 'customer_id', 'customer_unique_id', 'seller_state', 'seller_id', 'order_id', 'order_item_id', 'order_status', 'order_purchase_timestamp', 'order_approved_at', 'order_estimated_delivery_date', 'order_estimated_delivery_date', 'freight_value', 'price']]
 
+df.to_parquet('gs://stack-labs-list/df.parquet')
 
