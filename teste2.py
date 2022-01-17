@@ -11,6 +11,17 @@ from sklearn.preprocessing import StandardScaler,PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 #%matplotlib inline
 
+from folium import Choropleth, Circle, Marker
+from folium.plugins import HeatMap, MarkerCluster
+import folium
+from folium.plugins import FastMarkerCluster
+
+import plotly.offline as py
+import plotly.graph_objs as go
+
+import plotly.express as px
+           
+
 df_customer = pd.read_csv('gs://stack-labs-list/landig/olist_customers_dataset.csv', sep=";")
 df_geolocation = pd.read_csv('gs://stack-labs-list/landig/olist_geolocation_dataset.csv', sep=";")
 df_order_items = pd.read_csv('gs://stack-labs-list/landig/olist_order_items_dataset.csv', sep=";")
@@ -55,10 +66,6 @@ sns.barplot(x = total_cities.index,
             y = total_cities.values,
                 palette='icefire_r');
 
-from folium import Choropleth, Circle, Marker
-from folium.plugins import HeatMap, MarkerCluster
-import folium
-from folium.plugins import FastMarkerCluster
 
 round((df_geolocation['geolocation_state'].value_counts()/len(df_geolocation['geolocation_state']))*100,2
       
@@ -71,10 +78,7 @@ df_orders['order_status'].value_counts().iplot(kind='bar')
 df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
 df['order_purchase_month'] = df['order_purchase_timestamp'].dt.to_period('M').astype(str)
       
-import plotly.offline as py
-import plotly.graph_objs as go
-      
-      
+     
 configure_plotly_browser_state()
 data_vendas_mes = [go.Bar(x=vendas_por_mes.index,
                           y=vendas_por_mes.values,
@@ -173,8 +177,6 @@ data_delivery_produtcs.groupby('customer_state')['diff_delivery_estimated'].sum(
 data_porcent_atraso = (data_delivery_produtcs.groupby('customer_state')['order_id'].nunique().sort_values(ascending=False) / df.groupby('customer_state')['order_id'].nunique().sort_values(ascending=False)) * 100
       
 data_porcent_atraso.sort_values(ascending=False)
-      
-import plotly.express as px
       
       
 #Função para criar a feature de região
