@@ -20,7 +20,8 @@ import plotly.offline as py
 import plotly.graph_objs as go
 
 import plotly.express as px
-         
+
+#Lendo arquivos csv         
 df_customer = pd.read_csv('gs://stack-labs-list/landig/olist_customers_dataset.csv', sep=";")
 df_geolocation = pd.read_csv('gs://stack-labs-list/landig/olist_geolocation_dataset.csv', sep=";")
 df_order_items = pd.read_csv('gs://stack-labs-list/landig/olist_order_items_dataset.csv', sep=";")
@@ -31,6 +32,7 @@ df_products = pd.read_csv('gs://stack-labs-list/landig/olist_products_dataset.cs
 df_sellers = pd.read_csv('gs://stack-labs-list/landig/olist_sellers_dataset.csv', sep=";")
 df_category_name = pd.read_csv('gs://stack-labs-list/landig/product_category_name_translation.csv', sep=";")
 
+#Executando merge
 df = df_orders.merge(df_order_items, on='order_id', how='left')
 df = df.merge(df_order_payments, on='order_id', how='outer', validate='m:m')
 df = df.merge(df_order_reviews, on='order_id', how='outer')
@@ -38,15 +40,28 @@ df = df.merge(df_products, on='product_id', how='outer')
 df = df.merge(df_customer, on='customer_id', how='outer')
 df = df.merge(df_sellers, on='seller_id', how='outer')
 
-df.to_parquet('gs://stack-labs-list/processing/df')
+df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
+df['order_purchase_month'] = df['order_purchase_timestamp'].dt.to_period('M').astype(str)
 
-df_customer.to_parquet('gs://stack-labs-list/processing/df_customer')
+#Criando tabela fato
+df.to_parquet('gs://stack-labs-list/processing/df')
 
 df=pd.read_parquet('gs://stack-labs-list/processing/df')
 
 df=df[['customer_state', 'customer_city', 'customer_id', 'customer_unique_id', 'seller_state', 'seller_id', 'order_id', 'order_item_id', 'order_status', 'order_purchase_timestamp', 'order_approved_at', 'order_estimated_delivery_date', 'freight_value', 'price']]
 
 df.to_parquet('gs://stack-labs-list/curated/df')
+
+
+
+
+
+
+
+
+
+
+
 
       
       
