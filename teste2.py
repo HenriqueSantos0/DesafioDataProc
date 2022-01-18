@@ -40,9 +40,6 @@ df = df.merge(df_products, on='product_id', how='outer')
 df = df.merge(df_customer, on='customer_id', how='outer')
 df = df.merge(df_sellers, on='seller_id', how='outer')
 
-df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
-df['order_purchase_month'] = df['order_purchase_timestamp'].dt.to_period('M').astype(str)
-
 #Criando tabela fato
 df.to_parquet('gs://stack-labs-list/processing/df')
 
@@ -52,6 +49,8 @@ df=df[['customer_state', 'customer_city', 'customer_id', 'customer_unique_id', '
 
 df.to_parquet('gs://stack-labs-list/curated/df')
 
+df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
+df['order_purchase_month'] = df['order_purchase_timestamp'].dt.to_period('M').astype(str)
 
 
 
