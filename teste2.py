@@ -85,8 +85,8 @@ df['order_freight_ratio'] = df.freight_value / df.price
 df['diff_delivery_estimated'] = df['delivery_time'] - df['estimated_delivery_time']
 
 #Precisa resolver~~~~~~~~
-data_delivery_produtcs = df[df['diff_delivery_estimated']> 0 ]
-df['data_delivery_products'] = data_delivery_produtcs
+df['data_delivery_products'] = df['diff_delivery_estimated']> 0
+
 #~~~~~~~~
 
 
