@@ -65,7 +65,7 @@ df = df.merge(df_sellers, on='seller_id', how='outer')
 #Criando tabela fato
 df=df[['customer_state', 'customer_city', 'customer_id', 'customer_unique_id', 'seller_state', 'seller_id', 'order_id', 'order_item_id', 'order_status', 'order_purchase_timestamp', 'order_approved_at', 'order_estimated_delivery_date', 'order_delivered_customer_date', 'freight_value', 'price']]
 
-df.to_parquet('gs://stack-labs-list/curated/df')
+df.to_parquet('gs://stack-labs-list/curated/df_betha')
 
 
 df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
@@ -82,10 +82,10 @@ df['estimated_delivery_time'] = (df['order_estimated_delivery_date'] - df['order
 df['order_freight_ratio'] = df.freight_value / df.price
 
 
-df['delivery_time']
 df['diff_delivery_estimated'] = df['delivery_time'] - df['estimated_delivery_time']
-data_delivery_produtcs = df[df['diff_delivery_estimated']> 0 ]
+df['data_delivery_produtcs'] = df[df['diff_delivery_estimated']> 0 ]
 
+df.to_parquet('gs://stack-labs-list/curated/df_main')
 
 
 
