@@ -63,16 +63,32 @@ df = df.merge(df_customer, on='customer_id', how='outer')
 df = df.merge(df_sellers, on='seller_id', how='outer')
 
 #Criando tabela fato
-#df.to_parquet('gs://stack-labs-list/processing/df')
-
-#df=pd.read_parquet('gs://stack-labs-list/processing/df')
-
 df=df[['customer_state', 'customer_city', 'customer_id', 'customer_unique_id', 'seller_state', 'seller_id', 'order_id', 'order_item_id', 'order_status', 'order_purchase_timestamp', 'order_approved_at', 'order_estimated_delivery_date', 'freight_value', 'price']]
 
 df.to_parquet('gs://stack-labs-list/curated/df')
 
+
 df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
 df['order_purchase_month'] = df['order_purchase_timestamp'].dt.to_period('M').astype(str)
+
+df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
+df['order_approved_at'] = pd.to_datetime(df['order_approved_at'])
+df['order_estimated_delivery_date'] = pd.to_datetime(df['order_estimated_delivery_date'])
+df['order_delivered_customer_date'] = pd.to_datetime(df['order_delivered_customer_date'])
+
+df['delivery_time'] = (df['order_delivered_customer_date'] - df['order_approved_at']).dt.total_seconds() / 86400
+df['estimated_delivery_time'] = (df['order_estimated_delivery_date'] - df['order_approved_at']).dt.total_seconds() / 86400
+
+df['order_freight_ratio'] = df.freight_value / df.price
+
+
+df['delivery_time']
+df['diff_delivery_estimated'] = df['delivery_time'] - df['estimated_delivery_time']
+data_delivery_produtcs = df[df['diff_delivery_estimated']> 0 ]
+
+
+
+
 
 
 
