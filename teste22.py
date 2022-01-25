@@ -4,7 +4,24 @@ from fbprophet.plot import plot_plotly, plot_components_plotly
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 
-df = pd.read_parquet('gs://stack-labs-list/curated/df_main')
+#Lendo arquivos em parquet
+df_customer=pd.read_parquet('gs://stack-labs-list/processing/df_customer')
+df_geolocation=pd.read_parquet('gs://stack-labs-list/processing/df_geolocation')
+df_order_items=pd.read_parquet('gs://stack-labs-list/processing/df_order_items')
+df_order_payments=pd.read_parquet('gs://stack-labs-list/processing/df_order_payments')
+df_order_reviews=pd.read_parquet('gs://stack-labs-list/processing/df_order_reviews')
+df_orders=pd.read_parquet('gs://stack-labs-list/processing/df_orders')
+df_products=pd.read_parquet('gs://stack-labs-list/processing/df_products')
+df_sellers=pd.read_parquet('gs://stack-labs-list/processing/df_sellers')
+df_category_name=pd.read_parquet('gs://stack-labs-list/processing/df_category_name')
+
+#Executando merge
+df = df_orders.merge(df_order_items, on='order_id', how='left')
+df = df.merge(df_order_payments, on='order_id', how='outer', validate='m:m')
+df = df.merge(df_order_reviews, on='order_id', how='outer')
+df = df.merge(df_products, on='product_id', how='outer')
+df = df.merge(df_customer, on='customer_id', how='outer')
+df = df.merge(df_sellers, on='seller_id', how='outer')
 
 df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp']).dt.date
 df1 = df.groupby('order_purchase_timestamp')['product_id'].count().reset_index()
