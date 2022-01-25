@@ -101,7 +101,7 @@ def transformar_estado(valor):
 df['customer_region'] = df['customer_state'].map(transformar_estado)
 df['seller_region'] = df['seller_state'].map(transformar_estado)
 
-df_region_1 = df[(df['customer_region'] == 'Nordeste') | (df['customer_region'] == 'Norte')]
+df_region_1 = df[(df['customer_region'] == 'Nordeste') | (df['customer_region'] == 'Norte') | (df['customer_region'] == 'Centro-Oeste')]
 
 
 df_region_1['order_purchase_timestamp'] = pd.to_datetime(df_region_1['order_purchase_timestamp']).dt.date
@@ -130,5 +130,7 @@ future = model.make_future_dataframe(periods=50, freq='M')
 forecast = model.predict(future)
 
 
-
+DATA_PATH = "gs://stack-labs-list/curated/modelo/"
+with open(DATA_PATH+"test.pickle", 'rb') as f:
+     pickle.dump(model, f)
 
