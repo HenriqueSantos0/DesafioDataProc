@@ -130,7 +130,7 @@ future = model.make_future_dataframe(periods=50, freq='M')
 forecast = model.predict(future)
 
 
-DATA_PATH = "gs://stack-labs-list/curated/modelo/"
+DATA_PATH = "gs://stack-labs-list/curated/"
 with open(DATA_PATH+"test.pickle", 'rb') as f:
      pickle.dump(model, f)
 
