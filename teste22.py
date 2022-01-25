@@ -4,7 +4,7 @@ from fbprophet.plot import plot_plotly, plot_components_plotly
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 
-df = pd.read_parquet('gs://stack-labs-list/curated/df_betha')
+df = pd.read_parquet('gs://stack-labs-list/curated/df_main')
 
 df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp']).dt.date
 df1 = df.groupby('order_purchase_timestamp')['product_id'].count().reset_index()
