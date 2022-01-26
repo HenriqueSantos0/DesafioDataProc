@@ -78,10 +78,10 @@ def transformar_estado(valor):
 df['customer_region'] = df['customer_state'].map(transformar_estado)
 df['seller_region'] = df['seller_state'].map(transformar_estado)
 
-df_1 = df[(df['customer_region'] == 'Nordeste') | (df['customer_region'] == 'Norte')]
+df_1 = df[(df['customer_region'] == 'Nordeste') | (df['customer_region'] == 'Norte') | (df['customer_region'] == 'Centro-Oeste')]
 
 
-df_customer_region = df_1[(df_1.seller_region != "Nordeste") & (df_1.seller_region != "Norte")]
+df_customer_region = df_1[(df_1.seller_region != "Nordeste") & (df_1.seller_region != "Norte") & (df_1.seller_region != "Centro-Oeste")]
 
 
 df_customer_region.to_parquet('gs://stack-labs-list/curated/df_customer_region')
