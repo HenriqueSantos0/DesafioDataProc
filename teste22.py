@@ -129,8 +129,20 @@ print('Test RMSE: %.3f' % rmse)
 future = model.make_future_dataframe(periods=50, freq='M')  
 forecast = model.predict(future)
 
+figura = model.plot(saida, xlabel = 'Data', ylabel = 'Vendas');
 
-DATA_PATH = "gs://stack-labs-list/curated/"
-with open(DATA_PATH+"test.pickle", 'rb') as f:
-     pickle.dump(model, f)
+model.plot_components(saida)
+
+future = model.make_future_dataframe(periods=50, freq='M')  
+forecast = model.predict(future)
+
+model.plot(forecast, xlabel = 'Date', ylabel = 'Vendas');
+
+
+
+
+
+#DATA_PATH = "gs://stack-labs-list/curated/"
+#with open(DATA_PATH+"test.pickle", 'rb') as f:
+     #pickle.dump(model, f)
 
